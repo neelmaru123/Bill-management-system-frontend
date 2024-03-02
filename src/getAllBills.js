@@ -8,13 +8,15 @@ function GetAllBills() {
     const [data, setdata] = useState([]);
     let currentDate = new Date();
     let aprilFirst = new Date(currentDate.getFullYear(), 3, 1);
-    
     let [startingDate, setStartingDate] = useState(
         currentDate >= aprilFirst
             ? new Date(currentDate.getFullYear(), 3, 1) // April 1st of the current year
             : new Date(currentDate.getFullYear() - 1, 3, 1) // April 1st of the previous year
     );
     let [endingDate, setEndingDate] = useState(new Date()); // Today's date
+    const [searchTermBillNo, setSearchTermBillNo] = useState('');
+    const [searchTermPartyName, setSearchTermPartyName] = useState('');
+
     useEffect(() => {
         fetch(api_url)
             .then(response => response.json())
@@ -23,48 +25,56 @@ function GetAllBills() {
     })
 
 
-    let allBill = data.map((bill) => {
-        console.log(bill.date, startingDate, endingDate);
-        if (bill.billNo % 2 == 0) {
-            return (
-                <tr className=" bg-theme-light-shadeh-auto p-4">
-                    <td className="p-2">{bill.billNo}</td>
-                    <td className="p-2">{bill.date}</td>
-                    <td className="p-2">{bill.companyName}</td>
-                    <td className="p-2">{bill.totalBillAmount}</td>
-                    <td className="p-2">{bill.paidAmount}</td>
-                    <td className="p-2">{bill.dueAmount}</td>
-                    <td className="p-2">
-                        <button className=" bg-theme-dark p-2 text-theme-light rounded-xl" onClick={
-                            () => {
-                                navigate("/home/" + bill.id)
-                            }
-                        }>View</button>
-                    </td>
-                </tr>
-            )
-
-        }
-        else {
-            return (
-                <tr className="bg-slate-200 h-auto p-4" >
-                    <td className="p-2">{bill.billNo}</td>
-                    <td className="p-2">{bill.date}</td>
-                    <td className="p-2">{bill.companyName}</td>
-                    <td className="p-2">{bill.totalBillAmount}</td>
-                    <td className="p-2">{bill.paidAmount}</td>
-                    <td className="p-2">{bill.dueAmount}</td>
-                    <td className="p-2">
-                        <button className=" bg-theme-dark p-2 text-theme-light rounded-xl" onClick={
-                            () => {
-                                navigate("/home/" + bill.id)
-                            }
-                        }>View</button>
-                    </td>
-                </tr>
-            )
-        }
-    })
+    let allBill = data
+        .filter(bill => bill.billNo.toLowerCase().includes(searchTermBillNo.toLowerCase()))
+        .filter(bill => bill.companyName.toLowerCase().includes(searchTermPartyName.toLowerCase()))
+        .map((bill) => {
+            console.log(bill.date, startingDate, endingDate);
+            if (bill.billNo % 2 == 0) {
+                let billDate = new Date(bill.date);
+                if (billDate >= startingDate && billDate <= endingDate) {
+                    return (
+                        <tr className=" bg-theme-light-shadeh-auto p-4">
+                            <td className="p-2">{bill.billNo}</td>
+                            <td className="p-2">{bill.date}</td>
+                            <td className="p-2">{bill.companyName}</td>
+                            <td className="p-2">{bill.totalBillAmount}</td>
+                            <td className="p-2">{bill.paidAmount}</td>
+                            <td className="p-2">{bill.dueAmount}</td>
+                            <td className="p-2">
+                                <button className=" bg-theme-dark p-2 text-theme-light rounded-xl" onClick={
+                                    () => {
+                                        navigate("/home/" + bill.id)
+                                    }
+                                }>View</button>
+                            </td>
+                        </tr>
+                    )
+                }
+            }
+            else {
+                let billDate = new Date(bill.date);
+                if (billDate >= startingDate && billDate <= endingDate) {
+                    return (
+                        <tr className="bg-slate-200 h-auto p-4" >
+                            <td className="p-2">{bill.billNo}</td>
+                            <td className="p-2">{bill.date}</td>
+                            <td className="p-2">{bill.companyName}</td>
+                            <td className="p-2">{bill.totalBillAmount}</td>
+                            <td className="p-2">{bill.paidAmount}</td>
+                            <td className="p-2">{bill.dueAmount}</td>
+                            <td className="p-2">
+                                <button className=" bg-theme-dark p-2 text-theme-light rounded-xl" onClick={
+                                    () => {
+                                        navigate("/home/" + bill.id)
+                                    }
+                                }>View</button>
+                            </td>
+                        </tr>
+                    )
+                }
+            }
+        })
 
 
     return (
@@ -78,17 +88,11 @@ function GetAllBills() {
                 <div className="flex flex-row justify-between p-7">
                     <div className=" items-center align-middle">
                         <label className="block uppercase text-xl tracking-wide text-theme-dark font-bold mb-2  pe-3" for="grid-password">Bill No : </label>
-                        <input className="border rounded-lg text-theme-dark" type="text" onChange={(e) => {
-                            const searchTerm = e.target.value;
-                            const searchList = data.filter((item) => {
-                                return item.billNo.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
-                            });
-                            setdata(searchList);
-                        }}></input>
+                        <input className="border rounded-lg text-theme-dark" type="text" onChange={(e) => setSearchTermBillNo(e.target.value)}></input>
                     </div>
                     <div className=" items-center align-middle">
                         <label className="block uppercase text-xl tracking-wide text-theme-dark font-bold mb-2  pe-3" for="grid-password">Party Name : </label>
-                        <input className="border rounded-lg text-theme-dark" type="text"></input>
+                        <input className="border rounded-lg text-theme-dark" type="text" onChange={(e) => setSearchTermPartyName(e.target.value)}></input>
                     </div>
                     <div className=" items-center align-middle">
                         <label className="block uppercase text-xl tracking-wide text-theme-dark font-bold mb-2  pe-3" for="grid-password">Starting date : </label>
