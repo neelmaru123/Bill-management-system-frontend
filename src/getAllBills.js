@@ -6,6 +6,15 @@ import api_url from "./api";
 function GetAllBills() {
     const navigate = useNavigate();
     const [data, setdata] = useState([]);
+    let currentDate = new Date();
+    let aprilFirst = new Date(currentDate.getFullYear(), 3, 1);
+    
+    let [startingDate, setStartingDate] = useState(
+        currentDate >= aprilFirst
+            ? new Date(currentDate.getFullYear(), 3, 1) // April 1st of the current year
+            : new Date(currentDate.getFullYear() - 1, 3, 1) // April 1st of the previous year
+    );
+    let [endingDate, setEndingDate] = useState(new Date()); // Today's date
     useEffect(() => {
         fetch(api_url)
             .then(response => response.json())
@@ -15,6 +24,7 @@ function GetAllBills() {
 
 
     let allBill = data.map((bill) => {
+        console.log(bill.date, startingDate, endingDate);
         if (bill.billNo % 2 == 0) {
             return (
                 <tr className=" bg-theme-light-shadeh-auto p-4">
@@ -33,6 +43,7 @@ function GetAllBills() {
                     </td>
                 </tr>
             )
+
         }
         else {
             return (
@@ -68,11 +79,11 @@ function GetAllBills() {
                     <div className=" items-center align-middle">
                         <label className="block uppercase text-xl tracking-wide text-theme-dark font-bold mb-2  pe-3" for="grid-password">Bill No : </label>
                         <input className="border rounded-lg text-theme-dark" type="text" onChange={(e) => {
-                           const searchTerm = e.target.value;
-                           const searchList = data.filter((item) => {
-                             return item.billNo.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
-                           });
-                           setdata(searchList);
+                            const searchTerm = e.target.value;
+                            const searchList = data.filter((item) => {
+                                return item.billNo.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
+                            });
+                            setdata(searchList);
                         }}></input>
                     </div>
                     <div className=" items-center align-middle">
@@ -81,11 +92,11 @@ function GetAllBills() {
                     </div>
                     <div className=" items-center align-middle">
                         <label className="block uppercase text-xl tracking-wide text-theme-dark font-bold mb-2  pe-3" for="grid-password">Starting date : </label>
-                        <input className="border rounded-lg text-theme-dark" type="date"></input>
+                        <input className="border rounded-lg text-theme-dark" type="date" onChange={(e) => setStartingDate(new Date(e.target.value))}></input>
                     </div>
                     <div className=" items-center align-middle">
                         <label className="block uppercase text-xl tracking-wide text-theme-dark font-bold mb-2  pe-3" for="grid-password">ending date : </label>
-                        <input className="border rounded-lg text-theme-dark" type="date"></input>
+                        <input className="border rounded-lg text-theme-dark" type="date" onChange={(e) => setEndingDate(new Date(e.target.value))}></input>
                     </div>
                 </div>
                 <div className="flex justify-center">
