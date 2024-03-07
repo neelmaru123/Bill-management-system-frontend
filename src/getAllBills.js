@@ -18,11 +18,11 @@ function GetAllBills() {
     const [searchTermPartyName, setSearchTermPartyName] = useState('');
 
     useEffect(() => {
-        fetch(api_url)
+        fetch(api_url + "/bill")
             .then(response => response.json())
             .then(data => setdata(data))
             .catch(error => console.log(error))
-    })
+    },[])
 
 
     let allBill = data
@@ -44,7 +44,7 @@ function GetAllBills() {
                             <td className="p-2">
                                 <button className=" bg-theme-dark p-2 text-theme-light rounded-xl" onClick={
                                     () => {
-                                        navigate("/home/" + bill.id)
+                                        navigate("/home/" + bill._id)
                                     }
                                 }>View</button>
                             </td>
@@ -66,7 +66,7 @@ function GetAllBills() {
                             <td className="p-2">
                                 <button className=" bg-theme-dark p-2 text-theme-light rounded-xl" onClick={
                                     () => {
-                                        navigate("/home/" + bill.id)
+                                        navigate("/home/" + bill._id)
                                     }
                                 }>View</button>
                             </td>

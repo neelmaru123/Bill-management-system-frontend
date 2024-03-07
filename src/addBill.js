@@ -75,7 +75,7 @@ function AddBill() {
                     <button class="bg-theme-dark-shade hover:bg-theme-mediam-dark text-theme-light font-bold py-2 px-4 rounded" type="submit" onClick={(e) => {
                         console.log(data);
                         e.preventDefault();
-                       fetch(api_url, {
+                       fetch(api_url + "/bill", {
                             method: "POST",
                             body: JSON.stringify(data),
                             headers: {

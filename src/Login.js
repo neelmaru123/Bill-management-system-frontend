@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api_url from "./api";
 
 function Login() {
     const navigate = useNavigate();
+    const [data,setdata] = useState({});
+
     return (
         <div className="h-screen w-screen bg-theme-light-shade flex p-10 justify-center">
             <div className="flex flex-col justify-between bg-[url('./img/Background.png')] lg:bg-theme-light-shade bg-cover w-11/12 rounded-3xl shadow-2xl items-center object-cover">
@@ -13,19 +17,31 @@ function Login() {
                 <div className="flex justify-center row-auto mb-5">
                     <div className="flex flex-col">
                         <label className="text-lg font-bold text-theme-dark">Username</label>
-                        <input className="text-md font-bold text-theme-dark p-3 bg-transparent border-b-2 border-theme-light focus:outline-none" type="text" id="username"/>
+                        <input className="text-md font-bold text-theme-dark p-3 bg-transparent border-b-2 border-theme-light focus:outline-none" type="text" id="username" onChange={(e) => {
+                            setdata({...data, username: e.target.value})
+                        }}/>
                     </div>
                 </div>
                 <div className="flex justify-center row-auto">
                     <div className="flex flex-col">
                         <label className="text-lg font-bold text-theme-dark">Password</label>
-                        <input className="text-md font-bold text-theme-dark p-3 bg-transparent border-b-2 border-theme-light focus:outline-none" type="password" id="password"/>
+                        <input className="text-md font-bold text-theme-dark p-3 bg-transparent border-b-2 border-theme-light focus:outline-none" type="password" id="password" onChange={(e) => {
+                            setdata({...data, password: e.target.value})
+                        }}/>
                     </div>
                 </div>
                 <div className="flex justify-center row-auto">
                     <div className="flex flex-col">
-                        <button className="bg-theme-dark text-theme-light-shade p-3 rounded-lg shadow-2xl m-auto mt-10" onClick={() => {
-                            if(document.getElementById("username").value === "admin" && document.getElementById("password").value === "admin"){
+                        <button className="bg-theme-dark text-theme-light-shade p-3 rounded-lg shadow-2xl m-auto mt-10" onClick={async (e) => {
+                           const res = await fetch(api_url + "/login", {
+                                method: "POST",
+                                body: JSON.stringify(data),
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            });
+                            const resData = await res.json();
+                            if(resData.success === true){
                                 navigate("/home")
                             }
                             else{

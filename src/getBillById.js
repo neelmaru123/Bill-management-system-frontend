@@ -10,7 +10,7 @@ function GetBillById() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(api_url + "/" + params.id)
+        fetch(api_url + "/bill/" + params.id)
             .then(response => response.json())
             .then(data => setdata(data))
             .catch(error => console.log(error))
@@ -87,14 +87,14 @@ function GetBillById() {
                                     {getBillById}
                                     <tr className="flex font-bold">
                                         <td className="p-2"><button className="bg-theme-dark  p-3 text-theme-light rounded-xl" onClick={() => {
-                                            navigate("/home/editBill/" + data.id)
+                                            navigate("/home/editBill/" + data._id)
                                             console.log(data.id)
                                          }}>Edit Bill</button></td>
                                         <td className="p-2"> <button className="bg-theme-dark  p-3 text-theme-light rounded-xl" onClick={() => { 
                                             
                                         }}>Pay Amount</button> </td>
                                         <td className="p-2"><button className="bg-theme-dark  p-3 text-theme-light rounded-xl" onClick={() => {
-                                            fetch(api_url + "/" + data.id, {method: "DELETE"})
+                                            fetch(api_url + "/" + data._id, {method: "DELETE"})
                                                 .then(data => {
                                                     console.log(data);
                                                     navigate("/home")

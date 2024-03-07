@@ -10,7 +10,7 @@ function EditBill() {
     const params = useParams();
 
     useEffect(() => {
-        fetch(api_url + "/" + params.id)
+        fetch(api_url + "/bill/" + params.id)
             .then(response => {
                 if (!response.ok) {
                     throw new Error("Network response was not ok");

@@ -9,9 +9,11 @@ import GetAllBills from './getAllBills';
 import GetBillById from './getBillById';
 import AddBill from './addBill';
 import EditBill from './editBill';
+import LineChart from './Linechart.js';
+import { registerCharts } from './registerCharts.ts'
 
 
-
+registerCharts();
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
@@ -23,6 +25,7 @@ root.render(
           <Route path='/home/:id' element={<GetBillById />} />
           <Route path='/home/addBill' element={<AddBill />} />
           <Route path='/home/editBill/:id' element={<EditBill />} />
+          <Route path='/home/chart' element={<LineChart />} />
         </Route>
       </Route>
     </Routes>
