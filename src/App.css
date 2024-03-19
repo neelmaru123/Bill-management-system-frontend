@@ -37,14 +37,7 @@
   }
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  background-color: #f4f4f4;
-}
+
 
 .graph-container {
   max-width: 50%;

@@ -1,17 +1,15 @@
 import { Outlet } from "react-router-dom";
-import Header from "./header";
-import Sidebar from "./sideBar";
+import React from "react";
+import Example from "./heading";
 
 function HomeLayout() {
     return (
         <>
-            <Header />
-            <Sidebar />
+            <Example />
             <Outlet />
         </>
-
-
     )
 }
 
 export default HomeLayout;
+

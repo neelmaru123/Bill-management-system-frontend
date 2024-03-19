@@ -11,6 +11,10 @@ import AddBill from './addBill';
 import EditBill from './editBill';
 import LineChart from './Linechart.js';
 import { registerCharts } from './registerCharts.ts'
+import GetAllExpense from './getAllExpense.js';
+import GetExpenseById from './getExpenseById.js';
+import AddExpense from './addExpense.js';
+import EditExpense from './editExpense.js';
 
 
 registerCharts();
@@ -26,6 +30,10 @@ root.render(
           <Route path='/home/addBill' element={<AddBill />} />
           <Route path='/home/editBill/:id' element={<EditBill />} />
           <Route path='/home/chart' element={<LineChart />} />
+          <Route path='/home/expense' element={<GetAllExpense />} />
+          <Route path='/home/expense/:id' element={<GetExpenseById />} />
+          <Route path='/home/addExpense' element={<AddExpense />} />
+          <Route path='/home/editExpense/:id' element={<EditExpense />} />
         </Route>
       </Route>
     </Routes>

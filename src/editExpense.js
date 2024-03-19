@@ -3,14 +3,13 @@ import api_url from "./api"
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 
-
-function EditBill() {
+function EditExpense(){
     const [data, setdata] = new useState({ billNo: "" });
     const navigate = useNavigate();
     const params = useParams();
 
     useEffect(() => {
-        fetch(api_url + "/bill/" + params.id)
+        fetch(api_url + "/expense/" + params.id)
             .then(response => {
                 return response.json();
             })
@@ -22,20 +21,19 @@ function EditBill() {
         <>
         <div className="p-14">
                 <ArrowLeft className=" float-start" size={30} onClick={() => {
-                    navigate("/home", { replace: true })
+                    navigate("/home/expesne", { replace: true })
                 }} />
-                <h1 className="text-3xl font-bold text-theme-dark text-center">Edit Bill</h1>
+                <h1 className="text-3xl font-bold text-theme-dark text-center">Edit Expense</h1>
             </div>
             <div className="p-10">
-            
             <form class="w-full pt-8">
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                         <label class="block uppercase tracking-wide text-theme-dark text-xs font-bold mb-2" for="grid-first-name">
-                            Bill No
+                            Expense No
                         </label>
-                        <input class="appearance-none block w-full bg-gray-200 text-theme-dark border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="GT01" value={data.billNo} onChange={(e) => {
-                            setdata({ ...data, billNo: e.target.value });
+                        <input class="appearance-none block w-full bg-gray-200 text-theme-dark border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="GT01" value={data.expenseNo} onChange={(e) => {
+                            setdata({ ...data, expenseNo: e.target.value });
                         }} />
                         <p class="text-red-500 text-xs italic">Please fill out this field.</p>
                     </div>
@@ -116,8 +114,8 @@ function EditBill() {
                 <div className="pt-4">
                     <button class="bg-theme-dark-shade hover:bg-theme-mediam-dark text-theme-light font-bold py-2 px-4 rounded" type="submit" onClick={(event) => {
                         event.preventDefault();
-                        console.log(data);
-                        fetch(api_url + "/bill/" + params.id, {
+                        console.log(params.id);
+                        fetch(api_url + "/expense/" + params.id, {
                             method: "PUT",
                             body: JSON.stringify(data),
                             headers: {
@@ -125,8 +123,8 @@ function EditBill() {
                             },
                         })
                         .then(response => {
-                            console.log("bill updated");
-                            navigate("/home", { replace: true });
+                            console.log("Expense updated");
+                            navigate("/home/expense", { replace: true });
                         })
                         .catch(error => console.log(error));
                     }}>
@@ -140,4 +138,4 @@ function EditBill() {
     )
 }
 
-export default EditBill;
+export default EditExpense;

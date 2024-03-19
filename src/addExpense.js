@@ -1,16 +1,16 @@
-import { useState } from "react";
-import api_url from "./api";
-import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api_url from "./api";
 
-function AddBill() {
+function AddExpense() {
     const [data, setdata] = new useState({ date: new Date().toISOString().split('T')[0] });
     const navigate = useNavigate();
     return (
         <>
             <div className="p-14">
                 <ArrowLeft className=" float-start" size={30} onClick={() => {
-                    navigate("/home", { replace: true })
+                    navigate("/home/expense", { replace: true })
                 }} />
                 <h1 className="text-3xl font-bold text-theme-dark text-center">Add Bill</h1>
             </div>
@@ -19,10 +19,10 @@ function AddBill() {
                     <div class="flex flex-wrap -mx-3 mb-6">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <label class="block uppercase tracking-wide text-theme-dark text-xs font-bold mb-2" for="grid-first-name">
-                                Bill No
+                                Expense No
                             </label>
-                            <input class="appearance-none block w-full bg-gray-200 text-theme-dark border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="GT01" onChange={(e) => {
-                                setdata({ ...data, billNo: e.target.value });
+                            <input class="appearance-none block w-full bg-gray-200 text-theme-dark border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="EX01" onChange={(e) => {
+                                setdata({ ...data, expenseNo: e.target.value });
                             }} />
                             <p class="text-red-500 text-xs italic">Please fill out this field.</p>
                         </div>
@@ -104,16 +104,18 @@ function AddBill() {
                             console.log(data);
                             e.preventDefault();
 
-                            fetch(api_url + "/bill", {
+                            fetch(api_url + "/expense", {
                                 method: "POST",
                                 body: JSON.stringify(data),
                                 headers: {
                                     "Content-Type": "application/json"
                                 },
                             }).then(() => {
-                                console.log("new bill added");
-                                navigate("/home", { replace: true });
-                            });
+                                console.log("new expense added");
+                                navigate("/home/expense", { replace: true });
+                            }).catch((error) => {
+                                console.error('Error:', error);
+                              });
                         }}>
                             Submit
                         </button>
@@ -125,4 +127,5 @@ function AddBill() {
     )
 }
 
-export default AddBill;
+export default AddExpense;
+
